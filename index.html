@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ToDo</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="add_task">
+        <p>Add Task</p>
+        <div id="taskInput">
+          <input
+            type="text"
+            id="taskDetails"
+            placeholder="Enter task"
+            autofocus
+          />
+          <!-- <input type="date" name="input date" id="inputDate" /> -->
+          <button id="addBtn">Add</button>
+        </div>
+      </div>
+      <div id="showTask">
+        <h3>TASKS</h3>
+        <ul>
+          <li>
+            <input type="checkbox" id="selectAll" />Select All
+            <button id="delete">Delete</button>
+          </li>
+        </ul>
+        <ul id="taskTable" style="list-style: none"></ul>
+      </div>
+      <div id="completedTaskList">
+        <h3>Completed Task</h3>
+        <p>Completed Task</p>
+        <ul id="completeTaskHolder"></ul>
+      </div>
+    </div>
+    <script type="text/javascript" src="script\index.js"></script>
+  </body>
+</html>
