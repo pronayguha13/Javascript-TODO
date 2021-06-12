@@ -6,8 +6,18 @@
   </head>
   <body>
     <div id="container">
-      <div id="add_task">
-        <p>Add Task</p>
+      <div id="header">
+        <div>
+          <h3 id="dateSection">Day, <span id="date">Date</span></h3>
+          <p id="month">Month</p>
+        </div>
+        <p id="taskCount">Total Task count</p>
+      </div>
+      <button id="openModalBtn">
+        <img src="./image/add_white_24dp.svg" id="addBtnImage" alt="add" />
+      </button>
+      <!-- <div id="taskInputSection">
+        <p>Add New Task</p>
         <div id="taskInput">
           <input
             type="text"
@@ -15,25 +25,26 @@
             placeholder="Enter task"
             autofocus
           />
-          <!-- <input type="date" name="input date" id="inputDate" /> -->
           <button id="addBtn">Add</button>
         </div>
-      </div>
-      <div id="showTask">
-        <h3>TASKS</h3>
-        <ul>
-          <li>
-            <input type="checkbox" id="selectAll" />Select All
-            <button id="delete">Delete</button>
-          </li>
-        </ul>
+      </div> -->
+      <div id="pendingTaskSection">
+        <div id="allTaskController">
+          <input type="checkbox" id="selectAll" /><span>Select All</span>
+          <button id="deleteAll">
+            Delete all
+            <!-- <img
+              src="/image/delete_all.svg"
+              id="deleteAllImg"
+              alt="delete all"
+            /> -->
+          </button>
+        </div>
         <ul id="taskTable" style="list-style: none"></ul>
       </div>
-      <div id="completedTaskList">
-        <h3>Completed Task</h3>
-        <p>Completed Task</p>
-        <ul id="completeTaskHolder"></ul>
-      </div>
+      <!-- <div id="finishedTaskSection">
+        <ul id="finishedTakList"></ul>
+      </div> -->
     </div>
     <script type="text/javascript" src="script\index.js"></script>
   </body>
