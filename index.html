@@ -16,35 +16,53 @@
       <button id="openModalBtn">
         <img src="./image/add_white_24dp.svg" id="addBtnImage" alt="add" />
       </button>
-      <!-- <div id="taskInputSection">
-        <p>Add New Task</p>
-        <div id="taskInput">
-          <input
-            type="text"
-            id="taskDetails"
-            placeholder="Enter task"
-            autofocus
-          />
-          <button id="addBtn">Add</button>
-        </div>
-      </div> -->
       <div id="pendingTaskSection">
         <div id="allTaskController">
-          <input type="checkbox" id="selectAll" /><span>Select All</span>
-          <button id="deleteAll">
-            Delete all
-            <!-- <img
-              src="/image/delete_all.svg"
-              id="deleteAllImg"
-              alt="delete all"
-            /> -->
-          </button>
+          <input type="checkbox" id="selectAll" /><span id="selectAllText"
+            >Select All</span
+          >
+          <button id="deleteAll">Delete all</button>
         </div>
-        <ul id="taskTable" style="list-style: none"></ul>
+        <ul id="pendingTaskList">
+          <li>
+            <div class="leftSection">
+              <input type="checkbox" name="select" class="selectTask" />
+              <span class="taskDescription">Hello This is a demo task</span>
+            </div>
+            <span class="taskTime">Time</span>
+            <img src="image/delete.svg" id="deleteTask" alt="deleteTask" />
+          </li>
+        </ul>
       </div>
-      <!-- <div id="finishedTaskSection">
-        <ul id="finishedTakList"></ul>
-      </div> -->
+    </div>
+    <div id="taskInputContainer" class="hide">
+      <p id="taskInputHeader">Add New Task</p>
+      <div id="taskInputSection">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Enter Task..."
+          autofocus
+        />
+        <!--button for adding task with only description-->
+        <button id="addBtn">
+          <img src="/image/add_white_24dp.svg" alt="add task" />
+        </button>
+      </div>
+      <div id="taskInfo">
+        <label for="taskFinishDate">Finish Date:</label>
+        <input
+          type="date"
+          name="taskDate"
+          id="finishDate"
+          placeholder="Enter Finish Date"
+        />
+      </div>
+      <div id="taskInfo">
+        <label for="finishTime">Finish Time:</label>
+        <input type="time" name="taskEndTime" id="finishTime" />
+      </div>
+      <button id="createTaskBtn">Create Task</button>
     </div>
     <script type="text/javascript" src="script\index.js"></script>
   </body>
