@@ -1,133 +1,149 @@
 "use strict";
-var tdeatils = new Array();
+/*<--------global section-------->*/
+var tDetails = [];
 
-var showTaskList = document.getElementById("taskDetails");
+function getWeekDay(weekDayNum) {
+  let weekDay;
+  switch (weekDayNum) {
+    case 0:
+      weekDay = "Sunday";
+      break;
+    case 1:
+      weekDay = "Monday";
+      break;
+    case 2:
+      weekDay = "Tuesday";
+      break;
+    case 3:
+      weekDay = "Wednesday";
+      break;
+    case 4:
+      weekDay = "Thursday";
+      break;
+    case 5:
+      weekDay = "Friday";
+      break;
+    case 6:
+      weekDay = "Saturday";
+      break;
+    default:
+      break;
+  }
+  return weekDay;
+}
 
-//method to get date
-let dateNow = document.getElementById("inputDate");
-dateNow.addEventListener("change", () => console.log(typeof dateNow.value));
+function getCurrMonth(currMonthNum) {
+  let currMonth;
+  switch (currMonthNum) {
+    case 0:
+      currMonth = "January";
+      break;
+    case 1:
+      currMonth = "February";
+      break;
+    case 2:
+      currMonth = "March";
+      break;
+    case 3:
+      currMonth = "April";
+      break;
+    case 4:
+      currMonth = "May";
+      break;
+    case 5:
+      currMonth = "June";
+      break;
+    case 6:
+      currMonth = "July";
+      break;
+    case 7:
+      currMonth = "August";
+      break;
+    case 8:
+      currMonth = "September";
+      break;
+    case 9:
+      currMonth = "October";
+      break;
+    case 10:
+      currMonth = "November";
+      break;
+    case 11:
+      currMonth = "December";
+      break;
+    default:
+      break;
+  }
+  return currMonth;
+}
 
-//add task
-//var actionResponse = document.getElementsByClassName("btn Create createTask[0]").addEventListener("click",addTask);
-var actionResponse = document
-    .getElementById("addBtn")
-    .addEventListener("click", addTaskPermission),
-  list = document.getElementById("taskTable"),
-  enterButtonHandler = document
-    .getElementById("taskDetails")
-    .addEventListener("keydown", function (e) {
-      if (e.keyCode === 13) {
-        //checks whether the pressed key is "Enter"
-        addTaskPermission();
-      }
+function getFormattedDate() {
+  let dateObject = new Date();
+  let weekDay = getWeekDay(dateObject.getDay());
+  let currDate = dateObject.getDate();
+  let currMonth = getCurrMonth(dateObject.getMonth());
+  return [weekDay, currDate, currMonth];
+}
+
+/*<--------global section-------->*/
+
+/*<---------header data handler----------->*/
+const dateDisplayHandler = () => {
+  let dateArray = getFormattedDate();
+  let dateHolder = document.getElementById("dateSection");
+  let monthHolder = document.getElementById("month");
+  dateHolder.innerHTML = `${dateArray[0]}, <span id="date">${dateArray[1]}</span>`;
+  monthHolder.innerHTML = `${dateArray[2]}`;
+};
+
+const getTaskCountHandler = () => {
+  let taskCountHolder = document.getElementById("taskCount");
+  taskCountHolder.innerHTML =
+    tDetails.length === 0 ? "No Task" : `${tDetails.length} tasks are pending`;
+};
+/*<---------header data handler----------->*/
+
+//will be called on DOM content load
+const initHandler = () => {
+  dateDisplayHandler();
+  getTaskCountHandler();
+  fetchTaskData();
+};
+
+/*<-----task display handler------->*/
+function fetchTaskData() {
+  let taskList = document.getElementById("pendingTaskList");
+  if (tDetails.length) {
+    tDetails.forEach((task, id) => {
+      let taskLi = document.createElement("li");
+      let leftDiv = document.createElement("div");
+      leftDiv.setAttribute("class", "leftSection");
+      let checkInput = document.createElement("input");
+      checkInput.setAttribute("type", "checkbox");
+      checkInput.setAttribute("class", "selectTask");
+      let taskDescSpan = document.createElement("span");
+      taskDescSpan.setAttribute("class", "taskDescription");
+      taskDescSpan.innerHTML = task["desc"]; //add the task description
+
+      leftDiv.appendChild(checkInput);
+      leftDiv.appendChild(taskDescSpan);
+      let timeSpan = document.createElement("span");
+      timeSpan.setAttribute("class", "taskTime");
+      let deleteImage = document.createElement("img");
+      deleteImage.setAttribute("src", "image/delete.svg");
+      deleteImage.setAttribute("class", "deleteTask");
+      deleteImage.setAttribute("id", id);
+      deleteImage.setAttribute("alt", "delte this task");
+      taskLi.appendChild(leftDiv);
+      taskLi.appendChild(timeSpan);
+      taskLi.appendChild(deleteImage);
+      taskList.prepend(taskLi);
     });
-
-function addTaskPermission() {
-  var taskConfirmResponse = confirm("Do you want to add this task?");
-  if (taskConfirmResponse) {
-    addTask();
-  }
-}
-
-function addTask() {
-  var taskStatement = document.getElementById("taskDetails").value;
-  console.log(taskStatement);
-  var date = new Date();
-  var h = date.getHours();
-  var m = date.getMinutes();
-  var s = date.getSeconds();
-  var createdAt = h + ":" + m + ":" + s;
-  console.log(createdAt);
-  var isCompleted = false;
-  //buttons
-  var checkbox = document.createElement("input");
-  var btnEdit = document.createElement("button");
-  var btnDelete = document.createElement("button");
-
-  checkbox.type = "checkbox"; // make the element a checkbox
-  checkbox.class = "slct";
-  checkbox.addEventListener("click", clickCheckBox);
-  btnEdit.innerHTML = "Edit";
-  btnEdit.id = "edit";
-  btnDelete.innerHTML = "Delete";
-  btnDelete.id = "delete";
-  btnDelete.addEventListener("click", deleteTask);
-
-  var taskData = new Array(
-    checkbox,
-    taskStatement,
-    createdAt,
-    isCompleted,
-    btnEdit,
-    btnDelete
-  ); //creating the array taskData and populating it
-  tdeatils.unshift(taskData);
-  // console.log(tdeatils);
-  var tableId = document.getElementById("taskTable"); //get the ul
-  //console.log(tableId);
-  var newLiElement = document.createElement("li"); //create a new li element
-  newLiElement.className = "activeTask";
-  //console.log(newLiElement);
-  for (var i = 0; i < tdeatils[0].length; i++) {
-    if (i == 2 || i == 3) {
-      continue;
-    } else if (i == 1) {
-      var textField = document.createTextNode(tdeatils[0][1]);
-      newLiElement.appendChild(textField);
-      //console.log(textField.nodeValue);
-    } else {
-      var elem = tdeatils[0][i];
-      newLiElement.append(elem);
-    }
-  }
-  //console.log(checkboxToAppend);
-  tableId.prepend(newLiElement);
-}
-
-function clickCheckBox() {
-  var elementToBeDeleted = this.parentNode;
-  console.log(elementToBeDeleted);
-  elementToBeDeleted.style.textDecoration = "line-through";
-  this.parentNode.childNodes[2].remove();
-  moveCompletedTask(
-    this.parentNode.childNodes[1],
-    this.parentNode.childNodes[0],
-    this.parentNode.childNodes[2]
-  );
-  elementToBeDeleted.remove();
-}
-
-function moveCompletedTask(elementToBeDeleted, checkBox, dltButton) {
-  var completeTaskList = document.getElementById("completeTaskHolder");
-  var newCompleteTaskElement = document.createElement("li");
-  newCompleteTaskElement.id = "isCompleted";
-  //newCompleteTaskElement.appendChild(checkBox);
-  newCompleteTaskElement.appendChild(elementToBeDeleted);
-  newCompleteTaskElement.append(dltButton);
-  completeTaskList.prepend(newCompleteTaskElement);
-  completeTaskList.childNodes[0].style.textDecoration = "none";
-}
-
-//function of delete button
-var deleteButton = document.getElementById("delete");
-deleteButton.addEventListener("click", function () {
-  var activeTaskList = document.getElementById("taskTable");
-  if (activeTaskList.childNodes.length > 1) {
-    deleteAllActiveTask();
   } else {
-    alert("Add some task first");
-  }
-});
-
-function deleteTask(e) {
-  e.target.parentNode.remove();
-}
-
-function deleteAllActiveTask() {
-  var e = document.getElementById("taskTable");
-  var child = e.lastElementChild;
-  while (child) {
-    e.removeChild(child);
-    child = e.lastElementChild;
+    let noTaskNode = document.createElement("h3");
+    noTaskNode.innerHTML = "NO Task 🎉";
+    taskList.appendChild(noTaskNode);
   }
 }
+/*<-----task display handler------->*/
+document.addEventListener("DOMContentLoaded", initHandler);
