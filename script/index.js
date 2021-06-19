@@ -84,6 +84,19 @@ function getFormattedDate() {
   let currMonth = getCurrMonth(dateObject.getMonth());
   return [weekDay, currDate, currMonth];
 }
+function openInputModalHandler() {
+  let inputModal = document.getElementById("taskInputContainer");
+  inputModal.setAttribute("class", "show");
+  let container = document.getElementById("container");
+  container.style.opacity = "0.3";
+}
+
+function closeInputModalHandler() {
+  let inputModal = document.getElementById("taskInputContainer");
+  inputModal.setAttribute("class", "hide");
+  let container = document.getElementById("container");
+  container.style.opacity = "1";
+}
 
 /*<--------global section-------->*/
 
@@ -114,36 +127,92 @@ const initHandler = () => {
 function fetchTaskData() {
   let taskList = document.getElementById("pendingTaskList");
   if (tDetails.length) {
-    tDetails.forEach((task, id) => {
-      let taskLi = document.createElement("li");
-      let leftDiv = document.createElement("div");
-      leftDiv.setAttribute("class", "leftSection");
-      let checkInput = document.createElement("input");
-      checkInput.setAttribute("type", "checkbox");
-      checkInput.setAttribute("class", "selectTask");
-      let taskDescSpan = document.createElement("span");
-      taskDescSpan.setAttribute("class", "taskDescription");
-      taskDescSpan.innerHTML = task["desc"]; //add the task description
+    if (tDetails.length === 1) taskList.removeChild(taskList.firstChild);
 
-      leftDiv.appendChild(checkInput);
-      leftDiv.appendChild(taskDescSpan);
-      let timeSpan = document.createElement("span");
-      timeSpan.setAttribute("class", "taskTime");
-      let deleteImage = document.createElement("img");
-      deleteImage.setAttribute("src", "image/delete.svg");
-      deleteImage.setAttribute("class", "deleteTask");
-      deleteImage.setAttribute("id", id);
-      deleteImage.setAttribute("alt", "delte this task");
-      taskLi.appendChild(leftDiv);
-      taskLi.appendChild(timeSpan);
-      taskLi.appendChild(deleteImage);
-      taskList.prepend(taskLi);
-    });
+    let id = tDetails.length - 1;
+    let task = tDetails[0];
+    let taskLi = document.createElement("li");
+    let leftDiv = document.createElement("div");
+    leftDiv.setAttribute("class", "leftSection");
+    let checkInput = document.createElement("input");
+    checkInput.setAttribute("type", "checkbox");
+    checkInput.setAttribute("class", "selectTask");
+    let taskDescSpan = document.createElement("span");
+    taskDescSpan.setAttribute("class", "taskDescription");
+    taskDescSpan.innerHTML = task["desc"]; //add the task description
+
+    leftDiv.appendChild(checkInput);
+    leftDiv.appendChild(taskDescSpan);
+    let timeSpan = document.createElement("span");
+    timeSpan.setAttribute("class", "taskTime");
+    let deleteImage = document.createElement("img");
+    deleteImage.setAttribute("src", "image/delete.svg");
+    deleteImage.setAttribute("class", "deleteTask");
+    deleteImage.setAttribute("id", id);
+    deleteImage.setAttribute("alt", "delete this task");
+    deleteImage.addEventListener("click", deleteTaskHandler);
+    taskLi.appendChild(leftDiv);
+    taskLi.appendChild(timeSpan);
+    taskLi.appendChild(deleteImage);
+    taskList.prepend(taskLi);
   } else {
-    let noTaskNode = document.createElement("h3");
-    noTaskNode.innerHTML = "NO Task 🎉";
+    let noTaskNode = document.createElement("div");
+    noTaskNode.setAttribute("id", "noTask");
+    let noTaskP = document.createElement("p");
+    noTaskP.setAttribute("id", "noTaskP");
+    let addTaskBanner = document.createElement("h4");
+    addTaskBanner.setAttribute("id", "addTaskBanner");
+    addTaskBanner.innerHTML = "click + button to add task";
+    noTaskNode.appendChild(noTaskP);
+    noTaskNode.appendChild(addTaskBanner);
+    noTaskP.innerHTML = "No Task 🎉";
     taskList.appendChild(noTaskNode);
   }
 }
 /*<-----task display handler------->*/
 document.addEventListener("DOMContentLoaded", initHandler);
+
+/*<---- task input modal display handler ---->*/
+let openModalBtn = document.getElementById("openModalBtn");
+openModalBtn.addEventListener("click", openInputModalHandler);
+let closeModalBtn = document.getElementById("closeModal");
+closeModalBtn.addEventListener("click", closeInputModalHandler);
+
+/*<---task input handler----->*/
+function clearInputHandler(taskDesc, dateInput, timeInput) {
+  taskDesc.value = "";
+  dateInput.value = "";
+  timeInput.value = "";
+}
+
+function createTaskHandler(e) {
+  let { id } = e.target;
+  let taskDescInput = document.getElementById("taskInput");
+  let finishDate = document.getElementById("finishDate");
+  let finishTime = document.getElementById("finishTime");
+  let taskDesc = taskDescInput.value.trim();
+  let taskDate = finishDate.value;
+  let taskTime = finishTime.value;
+  let dateObj = getFormattedDate();
+  let newTask = {
+    desc: taskDesc,
+    date:
+      taskDate === "" || taskDate < new Date().getUTCDate()
+        ? `${dateObj[1]}-${dateObj[2]}-${new Date().getFullYear()}`
+        : taskDate,
+    time: taskTime === "" ? null : taskTime,
+  };
+  tDetails.unshift(newTask);
+  clearInputHandler(taskDescInput, finishDate, finishTime);
+  fetchTaskData();
+}
+let taskCreateBtn = document.getElementById("addBtn");
+let createTaskBtn = document.getElementById("createTaskBtn");
+taskCreateBtn.addEventListener("click", createTaskHandler);
+createTaskBtn.addEventListener("click", createTaskHandler);
+
+/*<------task manipulation handler------->*/
+function deleteTaskHandler(e) {
+  let { id } = e.target;
+  id = parseInt(id) + 1;
+}

@@ -228,7 +228,26 @@ input[type="checkbox"] + span {
   padding: 40px 32px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  box-shadow: 4px 7px 32px 14px #f2f2f2;
+  box-shadow: 2px 4px 32px 8px #b0a8a8;
+}
+
+#closeModal {
+  background-color: var(--btn-bgColor);
+  border-radius: 50%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  padding: 4px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  box-shadow: 4px 4px 24px 8px #bfb9b9;
+}
+
+#closeModal:hover {
+  background-color: #ec0f39eb;
+  box-shadow: -4px 4px 24px 8px #bfb9b9;
 }
 
 #taskInputHeader {
@@ -327,3 +346,19 @@ input[type="checkbox"] + span {
 }
 
 /*<-------task input modal-------->*/
+
+#noTask {
+  padding-top: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#noTaskP {
+  font-size: 1.2em;
+}
+
+#addTaskBanner {
+  font-size: 1.5em;
+}
