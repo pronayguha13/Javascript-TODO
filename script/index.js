@@ -76,6 +76,24 @@ function getCurrMonth(currMonthNum) {
   }
   return currMonth;
 }
+const formatDate = (inputDate) => {
+  const dates = inputDate.split("-");
+  dates.reverse();
+  let formattedDate = dates.join("-");
+  return formattedDate;
+};
+
+const formatTime = (inputTime) => {
+  let times = inputTime.split(":");
+  let hour = parseInt(times[0]);
+  if (hour >= 12) {
+    hour -= 12;
+    return `${hour}:${times[1]} PM`;
+  } else {
+    return `${hour}:${times[1]} AM`;
+  }
+  return times.join(":");
+};
 
 function getFormattedDate() {
   let dateObject = new Date();
@@ -145,6 +163,7 @@ function fetchTaskData() {
     leftDiv.appendChild(taskDescSpan);
     let timeSpan = document.createElement("span");
     timeSpan.setAttribute("class", "taskTime");
+    timeSpan.innerHTML = task["time"] + "\t" + task["date"];
     let deleteImage = document.createElement("img");
     deleteImage.setAttribute("src", "image/delete.svg");
     deleteImage.setAttribute("class", "deleteTask");
@@ -191,8 +210,14 @@ function createTaskHandler(e) {
   let finishDate = document.getElementById("finishDate");
   let finishTime = document.getElementById("finishTime");
   let taskDesc = taskDescInput.value.trim();
-  let taskDate = finishDate.value;
-  let taskTime = finishTime.value;
+  if (taskDesc === "") {
+    alert("Please add task description");
+    taskDescInput.focus();
+  }
+  let taskDate = formatDate(finishDate.value);
+  let taskTime =
+    finishTime.value === "" ? finishTime.value : formatTime(finishTime.value);
+
   let dateObj = getFormattedDate();
   let newTask = {
     desc: taskDesc,
@@ -200,7 +225,7 @@ function createTaskHandler(e) {
       taskDate === "" || taskDate < new Date().getUTCDate()
         ? `${dateObj[1]}-${dateObj[2]}-${new Date().getFullYear()}`
         : taskDate,
-    time: taskTime === "" ? null : taskTime,
+    time: taskTime,
   };
   tDetails.unshift(newTask);
   clearInputHandler(taskDescInput, finishDate, finishTime);
@@ -215,4 +240,10 @@ createTaskBtn.addEventListener("click", createTaskHandler);
 function deleteTaskHandler(e) {
   let { id } = e.target;
   id = parseInt(id) + 1;
+  let delIndex = tDetails.length - id;
+
+  tDetails = tDetails.filter((elem, id) => id !== delIndex);
+  let taskList = document.getElementById("pendingTaskList");
+  taskList.removeChild(taskList.childNodes[delIndex]);
+  fetchTaskData();
 }
