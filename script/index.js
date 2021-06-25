@@ -260,8 +260,17 @@ function clearInputHandler(taskDesc, dateInput, timeInput) {
   timeInput.value = "";
 }
 
+let taskDescInput = document.getElementById("taskInput");
+
+taskDescInput.addEventListener("keydown", taskDescInputHandler);
+function taskDescInputHandler(e) {
+  let { keyCode } = e;
+  if (keyCode === 13) {
+    createTaskHandler(e);
+  }
+}
+
 function createTaskHandler(e) {
-  let { id } = e.target;
   let taskDescInput = document.getElementById("taskInput");
   let finishDate = document.getElementById("finishDate");
   let finishTime = document.getElementById("finishTime");
@@ -288,6 +297,7 @@ function createTaskHandler(e) {
   clearInputHandler(taskDescInput, finishDate, finishTime);
   fetchTaskData();
   globalControlHandler();
+  closeInputModalHandler();
 }
 let taskCreateBtn = document.getElementById("addBtn");
 let createTaskBtn = document.getElementById("createTaskBtn");

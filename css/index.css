@@ -262,15 +262,14 @@ input[type="checkbox"] + span {
 }
 
 #taskInputSection {
-  width: 18rem;
+  width: 17rem;
   display: flex;
   justify-content: flex-start;
   padding-bottom: 20px;
 }
 
 #taskInput {
-  width: 80%;
-  margin-right: 20px;
+  width: 100%;
   outline: none;
   border: none;
   border-bottom: 2px solid #000000ad;
@@ -281,38 +280,6 @@ input[type="checkbox"] + span {
 #taskInput::placeholder {
   font-size: 1em;
   color: #b0b0be;
-}
-
-#addBtn {
-  width: 26px;
-  height: 26px;
-  border-radius: 100%;
-  background-color: var(--btn-bgColor);
-  outline: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#addBtn img {
-  transform: rotate(360deg);
-}
-
-@keyframes reverseRotation {
-  0% {
-    transform: rotate(360deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-#addBtn:hover img {
-  animation: reverseRotation 0.5s linear;
 }
 
 #taskInfo {
