@@ -299,9 +299,8 @@ function createTaskHandler(e) {
   globalControlHandler();
   closeInputModalHandler();
 }
-let taskCreateBtn = document.getElementById("addBtn");
+
 let createTaskBtn = document.getElementById("createTaskBtn");
-taskCreateBtn.addEventListener("click", createTaskHandler);
 createTaskBtn.addEventListener("click", createTaskHandler);
 
 /*<------task delete handler------->*/
