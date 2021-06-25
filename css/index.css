@@ -203,6 +203,10 @@ input[type="checkbox"] + span {
   align-items: center;
 }
 
+.completedTask {
+  text-decoration: line-through;
+}
+
 .taskTime {
   color: #ababbd;
 }
